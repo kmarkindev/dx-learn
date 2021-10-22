@@ -13,6 +13,8 @@ FirstRender::FirstRender(const HINSTANCE& hInst, const HWND& hwnd)
 
 void FirstRender::Render()
 {
+    DirectX::XMMATRIX rotateMatrix = DirectX::XMMatrixRotationZ(std::sin(_timer));
+
     _d3dContext->OMSetRenderTargets(1, &_backBufferRenderView.p, 0);
 
     float clearColor[4] = {0.3f, 0.2f, 0.2f, 1.0f};
@@ -27,6 +29,9 @@ void FirstRender::Render()
 
     _d3dContext->VSSetShader(_vertShader.p, 0, 0);
     _d3dContext->PSSetShader(_pixelShader.p, 0 ,0);
+
+    _d3dContext->UpdateSubresource(_rotMatrixBuffer.p, 0, 0, &rotateMatrix, 0, 0);
+    _d3dContext->VSSetConstantBuffers(0, 1, &_rotMatrixBuffer.p);
 
     _d3dContext->PSSetShaderResources(0, 1, &_shaderResView.p);
     _d3dContext->PSSetSamplers(0, 1, &_samplerState.p);
@@ -71,6 +76,16 @@ void FirstRender::CreateBuffer()
 
     if(FAILED(result))
         throw std::runtime_error("Cannot load vertices into buffer");
+
+    bufDesc = {};
+    bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    bufDesc.Usage = D3D11_USAGE_DEFAULT;
+    bufDesc.ByteWidth = sizeof(XMMATRIX);
+
+    result = _d3dDevice->CreateBuffer(&bufDesc, nullptr, &_rotMatrixBuffer.p);
+
+    if(FAILED(result))
+        throw std::runtime_error("Cannot create buffer for rotation matrix");
 }
 
 void FirstRender::Unload()
@@ -78,8 +93,10 @@ void FirstRender::Unload()
 
 }
 
-bool FirstRender::Step(float dt)
+bool FirstRender::Step(float deltaTime)
 {
+    _timer += deltaTime;
+
     return false;
 }
 
@@ -164,9 +181,7 @@ void FirstRender::LoadTexture()
         L"Assets/texture.jpg", reinterpret_cast<ID3D11Resource**>(&_texture.p), &_shaderResView.p);
 
     if(FAILED(res))
-    {
         throw std::runtime_error("Cannot load texture");
-    }
 
     D3D11_SAMPLER_DESC samplerDesc = {};
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -179,8 +194,6 @@ void FirstRender::LoadTexture()
     res =  _d3dDevice->CreateSamplerState(&samplerDesc, &_samplerState.p);
 
     if(FAILED(res))
-    {
         throw std::runtime_error("Cannot create sampler state");
-    }
 }
 

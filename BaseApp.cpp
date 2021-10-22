@@ -6,9 +6,9 @@ BaseApp::BaseApp(const HINSTANCE& hInstance, const HWND& hwnd)
 
 }
 
-bool BaseApp::Update()
+bool BaseApp::Update(float deltaTime)
 {
-    if(Step(0))
+    if(Step(deltaTime))
         return true;
 
     Render();

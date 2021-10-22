@@ -15,6 +15,7 @@ add_subdirectory(3rdParty)
 target_include_directories(Base INTERFACE /)
 target_link_libraries(Base INTERFACE D3D11.lib D3DCompiler.lib DirectXTK)
 target_compile_definitions(Base INTERFACE UNICODE)
+target_compile_options(Base INTERFACE /W4 /WX)
 
 macro(AddExe name sources)
 	add_executable(${name} WIN32 ${sources})
