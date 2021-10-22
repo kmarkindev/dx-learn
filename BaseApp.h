@@ -32,6 +32,10 @@ protected:
     virtual bool Step(float deltaTime) = 0;
     virtual void Render() = 0;
 
+    CComPtr<ID3DBlob> LoadShaderBytecode(LPWSTR filename, LPSTR entryPoint);
+    std::pair<CComPtr<ID3D11VertexShader>, CComPtr<ID3DBlob>> LoadVertexShader(LPWSTR filename, LPSTR entryPoint);
+    std::pair<CComPtr<ID3D11PixelShader>, CComPtr<ID3DBlob>> LoadPixelShader(LPWSTR filename, LPSTR entryPoint);
+
     HINSTANCE _hInstance;
     HWND _hwnd;
 

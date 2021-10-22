@@ -191,7 +191,7 @@ void FirstRender::LoadTexture()
     samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-    res =  _d3dDevice->CreateSamplerState(&samplerDesc, &_samplerState.p);
+    res = _d3dDevice->CreateSamplerState(&samplerDesc, &_samplerState.p);
 
     if(FAILED(res))
         throw std::runtime_error("Cannot create sampler state");

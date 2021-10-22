@@ -92,3 +92,53 @@ void BaseApp::LoadD3d()
 
     _d3dContext->RSSetViewports(1, &viewportDesc);
 }
+
+std::pair<CComPtr<ID3D11PixelShader>, CComPtr<ID3DBlob>> BaseApp::LoadPixelShader(LPWSTR filename, LPSTR entryPoint)
+{
+    CComPtr<ID3DBlob> bytecode = LoadShaderBytecode(filename, entryPoint);
+    ID3D11PixelShader* res = nullptr;
+
+    HRESULT result = _d3dDevice->CreatePixelShader(bytecode->GetBufferPointer(),
+        bytecode->GetBufferSize(), 0, &res);
+
+    if(FAILED(result))
+        throw std::runtime_error("Cannot create pixel shader");
+
+    return std::pair(CComPtr(res), bytecode);
+}
+
+std::pair<CComPtr<ID3D11VertexShader>, CComPtr<ID3DBlob>> BaseApp::LoadVertexShader(LPWSTR filename, LPSTR entryPoint)
+{
+    CComPtr<ID3DBlob> bytecode = LoadShaderBytecode(filename, entryPoint);
+    ID3D11VertexShader* res = nullptr;
+
+    HRESULT result = _d3dDevice->CreateVertexShader(bytecode->GetBufferPointer(),
+                                            bytecode->GetBufferSize(), 0, &res);
+
+    if(FAILED(result))
+        throw std::runtime_error("Cannot create vertex shader");
+
+    return std::make_pair(CComPtr(res), bytecode);
+}
+
+CComPtr<ID3DBlob> BaseApp::LoadShaderBytecode(LPWSTR filename, LPSTR entryPoint)
+{
+    CComPtr<ID3DBlob> errorBuffer = nullptr;
+    ID3DBlob* bytecode = nullptr;
+
+    DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
+
+    HRESULT result = D3DCompileFromFile(filename, nullptr, nullptr,
+                                        entryPoint, "ps_4_0", flags, 0, &bytecode, &errorBuffer.p);
+
+    if(FAILED(result))
+    {
+        if(errorBuffer != nullptr)
+            throw std::runtime_error("Cannot load and compile pixel shader from 'sampleShader.fx': "
+                                     + std::string((char*)errorBuffer->GetBufferPointer()));
+        else
+            throw std::runtime_error("Cannot load and compile pixel shader from sampleShader.fx");
+    }
+
+    return CComPtr(bytecode);
+}
