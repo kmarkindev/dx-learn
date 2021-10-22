@@ -3,6 +3,12 @@
 #include "BaseApp.h"
 #include <memory>
 
+struct Vertex
+{
+    DirectX::XMFLOAT3 pos;
+    DirectX::XMFLOAT2 uv;
+};
+
 class FirstRender : public BaseApp
 {
 public:
@@ -26,6 +32,9 @@ private:
     CComPtr<ID3D11InputLayout> _inputLayout;
     CComPtr<ID3DBlob> _vertShaderBytecode;
     CComPtr<ID3DBlob> _pixelShaderBytecode;
+    CComPtr<ID3D11Texture2D> _texture;
+    CComPtr<ID3D11ShaderResourceView> _shaderResView;
+    CComPtr<ID3D11SamplerState> _samplerState;
 
     void CreateBuffer();
 
@@ -36,4 +45,6 @@ private:
     void LoadVertexShader();
 
     void LoadPixelShader();
+
+    void LoadTexture();
 };

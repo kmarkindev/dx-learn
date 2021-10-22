@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include "atlbase.h"
 #include <DirectXMath.h>
+#include <WICTextureLoader.h>
 
 class BaseApp
 {

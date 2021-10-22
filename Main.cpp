@@ -2,6 +2,7 @@
 #include <memory>
 #include "BaseApp.h"
 #include <stdexcept>
+#include <objbase.h>
 
 std::unique_ptr<BaseApp> GetApp(const HINSTANCE& hInst, const HWND& hwnd);
 
@@ -32,6 +33,8 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) try
 {
+    CoInitialize(nullptr);
+
     LPCWSTR WINDOW_CLASS = L"Main Window";
 
     WNDCLASSW windowClass = {};

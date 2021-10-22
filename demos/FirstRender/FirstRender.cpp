@@ -18,7 +18,7 @@ void FirstRender::Render()
     float clearColor[4] = {0.3f, 0.2f, 0.2f, 1.0f};
     _d3dContext->ClearRenderTargetView(_backBufferRenderView, clearColor);
 
-    UINT stride = sizeof(DirectX::XMFLOAT3);
+    UINT stride = sizeof(Vertex);
     UINT offset = 0;
 
     _d3dContext->IASetInputLayout(_inputLayout.p);
@@ -27,7 +27,11 @@ void FirstRender::Render()
 
     _d3dContext->VSSetShader(_vertShader.p, 0, 0);
     _d3dContext->PSSetShader(_pixelShader.p, 0 ,0);
-    _d3dContext->Draw(3, 0);
+
+    _d3dContext->PSSetShaderResources(0, 1, &_shaderResView.p);
+    _d3dContext->PSSetSamplers(0, 1, &_samplerState.p);
+
+    _d3dContext->Draw(6, 0);
 
     _dxgiSwapChain->Present(0, 0);
 }
@@ -35,20 +39,24 @@ void FirstRender::Render()
 void FirstRender::Load()
 {
     CreateBuffer();
-
     LoadShaders();
-
     CreateInputLayout();
+    LoadTexture();
 }
 
 void FirstRender::CreateBuffer()
 {
     using namespace DirectX;
 
-    XMFLOAT3 verts[3] = {
-        XMFLOAT3(0.5f, 0.5f, 0.5f),
-        XMFLOAT3(0.5f, -0.5f, 0.5f),
-        XMFLOAT3(-0.5f, -0.5f, 0.5f)
+    Vertex verts[] = {
+            //first triangle
+            { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) },
+            { XMFLOAT3(  0.5f, -0.5f, 1.0f ), XMFLOAT2( 1.0f, 0.0f ) },
+            { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
+            //second triangle
+            { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
+            { XMFLOAT3( -0.5f,  0.5f, 1.0f ), XMFLOAT2( 0.0f, 1.0f ) },
+            { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) }
     };
 
     D3D11_BUFFER_DESC bufDesc = {};
@@ -112,7 +120,9 @@ void FirstRender::CreateInputLayout()
     D3D11_INPUT_ELEMENT_DESC vertexLayout[] =
     {
         {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
-         0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+         0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"TEXCOORDS", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+                sizeof(DirectX::XMFLOAT3), D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
     HRESULT result = _d3dDevice->CreateInputLayout(vertexLayout, ARRAYSIZE(vertexLayout),
@@ -146,5 +156,31 @@ void FirstRender::LoadPixelShader()
 
     if(FAILED(result))
         throw std::runtime_error("Cannot create pixel shader from sampleShader.fx");
+}
+
+void FirstRender::LoadTexture()
+{
+    HRESULT res = DirectX::CreateWICTextureFromFile(_d3dDevice, _d3dContext,
+        L"Assets/texture.jpg", reinterpret_cast<ID3D11Resource**>(&_texture.p), &_shaderResView.p);
+
+    if(FAILED(res))
+    {
+        throw std::runtime_error("Cannot load texture");
+    }
+
+    D3D11_SAMPLER_DESC samplerDesc = {};
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+    res =  _d3dDevice->CreateSamplerState(&samplerDesc, &_samplerState.p);
+
+    if(FAILED(res))
+    {
+        throw std::runtime_error("Cannot create sampler state");
+    }
 }
 

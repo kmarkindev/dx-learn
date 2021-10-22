@@ -9,8 +9,11 @@ target_sources(Base INTERFACE
 	BaseApp.cpp
 	BaseApp.h
 )
+
+add_subdirectory(3rdParty)
+
 target_include_directories(Base INTERFACE /)
-target_link_libraries(Base INTERFACE D3D11.lib D3DCompiler.lib)
+target_link_libraries(Base INTERFACE D3D11.lib D3DCompiler.lib DirectXTK)
 target_compile_definitions(Base INTERFACE UNICODE)
 
 macro(AddExe name sources)
