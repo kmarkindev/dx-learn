@@ -1,2 +1,3 @@
 add_subdirectory(BlankApp)
 add_subdirectory(FirstRender)
+add_subdirectory(TextRender)

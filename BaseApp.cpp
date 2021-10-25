@@ -19,6 +19,7 @@ bool BaseApp::Update()
 void BaseApp::Init()
 {
     LoadD3d();
+    LoadDependencies();
     Load();
 }
 
@@ -91,4 +92,10 @@ void BaseApp::LoadD3d()
     viewportDesc.MinDepth = 0.0f;
 
     _d3dContext->RSSetViewports(1, &viewportDesc);
+}
+
+void BaseApp::LoadDependencies()
+{
+    _shaderLoader = std::make_shared<ShaderLoader>(_d3dDevice.p);
+    _textRenderer = std::make_shared<TextRenderer>(_d3dDevice.p, _d3dContext.p, _shaderLoader);
 }

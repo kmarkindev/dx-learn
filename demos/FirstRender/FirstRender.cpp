@@ -16,7 +16,7 @@ void FirstRender::Render()
     _d3dContext->OMSetRenderTargets(1, &_backBufferRenderView.p, 0);
 
     float clearColor[4] = {0.3f, 0.2f, 0.2f, 1.0f};
-    _d3dContext->ClearRenderTargetView(_backBufferRenderView, clearColor);
+    _d3dContext->ClearRenderTargetView(_backBufferRenderView.p, clearColor);
 
     UINT stride = sizeof(Vertex);
     UINT offset = 0;
@@ -49,14 +49,14 @@ void FirstRender::CreateBuffer()
     using namespace DirectX;
 
     Vertex verts[] = {
-            //first triangle
-            { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) },
-            { XMFLOAT3(  0.5f, -0.5f, 1.0f ), XMFLOAT2( 1.0f, 0.0f ) },
-            { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
-            //second triangle
-            { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
-            { XMFLOAT3( -0.5f,  0.5f, 1.0f ), XMFLOAT2( 0.0f, 1.0f ) },
-            { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) }
+        //first triangle
+        { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) },
+        { XMFLOAT3(  0.5f, -0.5f, 1.0f ), XMFLOAT2( 1.0f, 0.0f ) },
+        { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
+        //second triangle
+        { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
+        { XMFLOAT3( -0.5f,  0.5f, 1.0f ), XMFLOAT2( 0.0f, 1.0f ) },
+        { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) }
     };
 
     D3D11_BUFFER_DESC bufDesc = {};
@@ -86,7 +86,6 @@ bool FirstRender::Step(float dt)
 void FirstRender::LoadShaders()
 {
     LoadVertexShader();
-
     LoadPixelShader();
 }
 
@@ -140,19 +139,19 @@ void FirstRender::LoadPixelShader()
     DWORD shaderFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
 
     HRESULT result = D3DCompileFromFile(L"Assets/sampleShader.fx", nullptr, nullptr,
-                                        "PS_Main", "ps_4_0", shaderFlags, 0, &_pixelShaderBytecode.p, &errorBuffer.p);
+        "PS_Main", "ps_4_0", shaderFlags, 0, &_pixelShaderBytecode.p, &errorBuffer.p);
 
     if(FAILED(result))
     {
         if(errorBuffer != nullptr)
             throw std::runtime_error("Cannot load and compile pixel shader from 'sampleShader.fx': "
-                                     + std::string((char*)errorBuffer->GetBufferPointer()));
+                + std::string((char*)errorBuffer->GetBufferPointer()));
         else
             throw std::runtime_error("Cannot load and compile pixel shader from sampleShader.fx");
     }
 
     result = _d3dDevice->CreatePixelShader(_pixelShaderBytecode->GetBufferPointer(),
-                                            _pixelShaderBytecode->GetBufferSize(), 0, &_pixelShader.p);
+        _pixelShaderBytecode->GetBufferSize(), 0, &_pixelShader.p);
 
     if(FAILED(result))
         throw std::runtime_error("Cannot create pixel shader from sampleShader.fx");
@@ -164,9 +163,7 @@ void FirstRender::LoadTexture()
         L"Assets/texture.jpg", reinterpret_cast<ID3D11Resource**>(&_texture.p), &_shaderResView.p);
 
     if(FAILED(res))
-    {
         throw std::runtime_error("Cannot load texture");
-    }
 
     D3D11_SAMPLER_DESC samplerDesc = {};
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -179,8 +176,6 @@ void FirstRender::LoadTexture()
     res =  _d3dDevice->CreateSamplerState(&samplerDesc, &_samplerState.p);
 
     if(FAILED(res))
-    {
         throw std::runtime_error("Cannot create sampler state");
-    }
 }
 

@@ -3,11 +3,13 @@
 #include <Windows.h>
 #include <d3d.h>
 #include <d3d11.h>
-#include <d3dcompiler.h>
 #include <stdexcept>
 #include "atlbase.h"
 #include <DirectXMath.h>
 #include <WICTextureLoader.h>
+#include "TextRenderer.h"
+#include "ShaderLoader.h"
+#include <memory>
 
 class BaseApp
 {
@@ -31,6 +33,9 @@ protected:
     virtual bool Step(float dt) = 0;
     virtual void Render() = 0;
 
+    std::shared_ptr<TextRenderer> _textRenderer;
+    std::shared_ptr<ShaderLoader> _shaderLoader;
+
     HINSTANCE _hInstance;
     HWND _hwnd;
 
@@ -43,6 +48,7 @@ protected:
 private:
 
     void LoadD3d();
+    void LoadDependencies();
 
 };
 
