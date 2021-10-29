@@ -3,11 +3,13 @@
 #include <Windows.h>
 #include <d3d.h>
 #include <d3d11.h>
-#include <d3dcompiler.h>
 #include <stdexcept>
 #include "atlbase.h"
 #include <DirectXMath.h>
 #include <WICTextureLoader.h>
+#include "TextRenderer.h"
+#include "ShaderLoader.h"
+#include <memory>
 
 class BaseApp
 {
@@ -15,7 +17,6 @@ public:
 
     BaseApp(const HINSTANCE& hInstance, const HWND& hwnd);
     virtual ~BaseApp() = default;
-
     BaseApp(const BaseApp&) = delete;
     BaseApp(BaseApp&&) = delete;
     BaseApp& operator = (BaseApp) = delete;
@@ -32,9 +33,8 @@ protected:
     virtual bool Step(float deltaTime) = 0;
     virtual void Render() = 0;
 
-    CComPtr<ID3DBlob> LoadShaderBytecode(LPWSTR filename, LPSTR entryPoint);
-    std::pair<CComPtr<ID3D11VertexShader>, CComPtr<ID3DBlob>> LoadVertexShader(LPWSTR filename, LPSTR entryPoint);
-    std::pair<CComPtr<ID3D11PixelShader>, CComPtr<ID3DBlob>> LoadPixelShader(LPWSTR filename, LPSTR entryPoint);
+    std::shared_ptr<TextRenderer> _textRenderer;
+    std::shared_ptr<ShaderLoader> _shaderLoader;
 
     HINSTANCE _hInstance;
     HWND _hwnd;
@@ -48,6 +48,7 @@ protected:
 private:
 
     void LoadD3d();
+    void LoadDependencies();
 
 };
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BaseApp.h"
-#include <memory>
 
 class TextRender : public BaseApp
 {
@@ -10,6 +9,7 @@ public:
     TextRender(const HINSTANCE& hInst, const HWND& hwnd);
 
 protected:
+
     void Load() override;
 
     void Unload() override;
@@ -17,7 +17,4 @@ protected:
     bool Step(float dt) override;
 
     void Render() override;
-
 };
-
-

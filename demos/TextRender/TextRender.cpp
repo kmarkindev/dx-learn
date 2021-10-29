@@ -27,5 +27,14 @@ bool TextRender::Step(float)
 
 void TextRender::Render()
 {
+    _d3dContext->OMSetRenderTargets(1, &_backBufferRenderView.p, 0);
 
+    float clearColor[4] = {0.3f, 0.3f, 0.5f, 1.0f};
+    _d3dContext->ClearRenderTargetView(_backBufferRenderView.p, clearColor);
+
+    _textRenderer->RenderString("A b", {0, 0});
+
+    _dxgiSwapChain->Present(0, 0);
 }
+
+
