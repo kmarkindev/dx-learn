@@ -16,7 +16,7 @@ class BaseApp
 public:
 
     BaseApp(const HINSTANCE& hInstance, const HWND& hwnd);
-
+    virtual ~BaseApp() = default;
     BaseApp(const BaseApp&) = delete;
     BaseApp(BaseApp&&) = delete;
     BaseApp& operator = (BaseApp) = delete;

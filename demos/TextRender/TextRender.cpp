@@ -20,7 +20,7 @@ void TextRender::Unload()
 
 }
 
-bool TextRender::Step(float dt)
+bool TextRender::Step(float)
 {
     return false;
 }
