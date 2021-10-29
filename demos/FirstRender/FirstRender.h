@@ -2,6 +2,7 @@
 
 #include "BaseApp.h"
 #include <memory>
+#include <cmath>
 
 struct Vertex
 {
@@ -22,7 +23,7 @@ protected:
 
     void Unload() override;
 
-    bool Step(float dt) override;
+    bool Step(float deltaTime) override;
 
 private:
 
@@ -35,6 +36,9 @@ private:
     CComPtr<ID3D11Texture2D> _texture;
     CComPtr<ID3D11ShaderResourceView> _shaderResView;
     CComPtr<ID3D11SamplerState> _samplerState;
+    CComPtr<ID3D11Buffer> _rotMatrixBuffer;
+
+    float _timer = 0;
 
     void CreateBuffer();
 

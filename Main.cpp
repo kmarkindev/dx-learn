@@ -3,6 +3,7 @@
 #include "BaseApp.h"
 #include <stdexcept>
 #include <objbase.h>
+#include <chrono>
 
 std::unique_ptr<BaseApp> GetApp(const HINSTANCE& hInst, const HWND& hwnd);
 
@@ -29,6 +30,30 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     }
 
     return 0;
+}
+
+float GetTime()
+{
+    using namespace std::chrono;
+
+    /*
+        Need to count time from starting of the program
+        because float doesn't have such precision to
+        show difference between so large divided numbers.
+        And I don't want to use double here.
+    */
+
+    static long long startMs = duration_cast<milliseconds>(
+            system_clock::now().time_since_epoch()
+    ).count();
+
+    long long msCurrent = duration_cast<milliseconds>(
+            system_clock::now().time_since_epoch()
+    ).count();
+
+    long long curMills = msCurrent - startMs;
+
+    return static_cast<float>(curMills / 1000.0);
 }
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow) try
@@ -75,6 +100,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow) try
 
     app->Init();
 
+    float lastTimePoint = GetTime();
+    float deltaTime = 0.0;
+
     while(!shouldExit)
     {
         if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -86,7 +114,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow) try
         }
         else
         {
-            shouldExit = app->Update();
+            shouldExit = app->Update(deltaTime);
+
+            float timeNow = GetTime();
+            deltaTime = timeNow - lastTimePoint;
+            lastTimePoint = timeNow;
         }
     }
 

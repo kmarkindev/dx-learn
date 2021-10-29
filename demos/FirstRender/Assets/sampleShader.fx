@@ -1,6 +1,11 @@
 Texture2D colorMap_ : register(t0);
 SamplerState colorSampler_ : register(s0);
 
+cbuffer cbChangesPerFrame : register(b0)
+{
+    matrix rot_;
+};
+
 struct VS_Input
 {
     float4 pos  : POSITION;
@@ -16,7 +21,7 @@ struct PS_Input
 PS_Input VS_Main( VS_Input vertex )
 {
     PS_Input vsOut = ( PS_Input )0;
-    vsOut.pos = vertex.pos;
+    vsOut.pos = mul(vertex.pos, rot_);
     vsOut.tex0 = vertex.tex0;
     return vsOut;
 }

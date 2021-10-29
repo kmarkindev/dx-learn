@@ -24,13 +24,13 @@ public:
 
     void Init();
     void Shutdown();
-    bool Update();
+    bool Update(float deltaTime);
 
 protected:
 
     virtual void Load() = 0;
     virtual void Unload() = 0;
-    virtual bool Step(float dt) = 0;
+    virtual bool Step(float deltaTime) = 0;
     virtual void Render() = 0;
 
     std::shared_ptr<TextRenderer> _textRenderer;

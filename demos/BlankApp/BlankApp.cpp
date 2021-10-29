@@ -20,7 +20,7 @@ void BlankApp::Unload()
 
 }
 
-bool BlankApp::Step(float dt)
+bool BlankApp::Step(float)
 {
     return false;
 }
