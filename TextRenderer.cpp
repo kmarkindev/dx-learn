@@ -186,12 +186,12 @@ void TextRenderer::CreateShadersAndInputLayout()
     _pixelShader = pixelShader.first;
 }
 
-void TextRenderer::RenderString(std::string_view text, DirectX::XMFLOAT2 position)
+void TextRenderer::RenderString(std::string_view text, DirectX::XMFLOAT2 position, float scale)
 {
     CreateTextures(text);
 
-    const unsigned int spaceAdvance = 10;
-    unsigned int x = static_cast<unsigned int>(position.x);
+    const float spaceAdvance = 10.0f;
+    float x = position.x;
 
     for(char chr : text)
     {
@@ -199,23 +199,23 @@ void TextRenderer::RenderString(std::string_view text, DirectX::XMFLOAT2 positio
 
         if(letterIter == _letters.end())
         {
-            x += spaceAdvance;
+            x += spaceAdvance * scale;
             continue;
         }
 
         Letter letter = letterIter->second;
 
         DirectX::XMFLOAT2 letterSize = {
-                static_cast<float>(letter.size.x),
-                static_cast<float>(letter.size.y)
+                static_cast<float>(letter.size.x) * scale,
+                static_cast<float>(letter.size.y) * scale
         };
 
         DirectX::XMFLOAT2 letterPos = {
-            static_cast<float>(x += letter.bearing.x),
-            static_cast<float>(position.y - letter.bearing.y)
+            static_cast<float>(x += letter.bearing.x * scale),
+            static_cast<float>(position.y - letter.bearing.y * scale)
         };
 
-        x += letter.advance >> 6;
+        x += (letter.advance >> 6) * scale;
 
         RECT rect = {};
         GetClientRect(_hwnd, &rect);
