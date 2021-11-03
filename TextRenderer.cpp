@@ -191,7 +191,7 @@ void TextRenderer::RenderString(std::string_view text, DirectX::XMFLOAT2 positio
     CreateTextures(text);
 
     const unsigned int spaceAdvance = 10;
-    unsigned int x = position.x;
+    unsigned int x = static_cast<unsigned int>(position.x);
 
     for(char chr : text)
     {
@@ -228,7 +228,7 @@ void TextRenderer::RenderString(std::string_view text, DirectX::XMFLOAT2 positio
         DirectX::XMMATRIX transformMatrix =
                 DirectX::XMMatrixScaling(letterSize.x, letterSize.y, 1)
                 * DirectX::XMMatrixTranslation(letterPos.x, letterPos.y, 0)
-                * DirectX::XMMatrixOrthographicOffCenterLH(0, rect.right, rect.bottom, 0, 0.0f, 1.0f);
+                * DirectX::XMMatrixOrthographicOffCenterLH(0, static_cast<float>(rect.right), static_cast<float>(rect.bottom), 0, 0.0f, 1.0f);
 
         DirectX::XMFLOAT4X4 mat = {};
         DirectX::XMStoreFloat4x4(&mat, transformMatrix);
