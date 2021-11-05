@@ -78,7 +78,7 @@ void FirstRender::CreateBuffer()
         throw std::runtime_error("Cannot load vertices into buffer");
 
     bufDesc = {};
-    bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bufDesc.Usage = D3D11_USAGE_DEFAULT;
     bufDesc.ByteWidth = sizeof(XMMATRIX);
 

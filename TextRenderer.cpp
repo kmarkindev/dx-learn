@@ -160,14 +160,14 @@ void TextRenderer::CreateLetterMeshBuffer()
         throw std::runtime_error("Cannot load vertices into buffer");
 
     bufDesc = {};
-    bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bufDesc.Usage = D3D11_USAGE_DEFAULT;
     bufDesc.ByteWidth = sizeof(XMFLOAT4X4);
 
     result = _d3dDevice->CreateBuffer(&bufDesc, nullptr, &_transformMatrixBuffer.p);
 
     if(FAILED(result))
-        throw std::runtime_error("Cannot create buffer for rotation matrix");
+        throw std::runtime_error("Cannot create buffer for transformation matrix");
 }
 
 void TextRenderer::CreateShadersAndInputLayout()
