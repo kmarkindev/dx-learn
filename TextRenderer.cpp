@@ -206,8 +206,8 @@ void TextRenderer::RenderString(std::string_view text, DirectX::XMFLOAT2 positio
         Letter letter = letterIter->second;
 
         DirectX::XMFLOAT2 letterSize = {
-                static_cast<float>(letter.size.x) * scale,
-                static_cast<float>(letter.size.y) * scale
+            static_cast<float>(letter.size.x) * scale,
+            static_cast<float>(letter.size.y) * scale
         };
 
         DirectX::XMFLOAT2 letterPos = {
@@ -226,9 +226,10 @@ void TextRenderer::RenderString(std::string_view text, DirectX::XMFLOAT2 positio
         }
 
         DirectX::XMMATRIX transformMatrix =
-                DirectX::XMMatrixScaling(letterSize.x, letterSize.y, 1)
-                * DirectX::XMMatrixTranslation(letterPos.x, letterPos.y, 0)
-                * DirectX::XMMatrixOrthographicOffCenterLH(0, static_cast<float>(rect.right), static_cast<float>(rect.bottom), 0, 0.0f, 1.0f);
+            DirectX::XMMatrixScaling(letterSize.x, letterSize.y, 1)
+            * DirectX::XMMatrixTranslation(letterPos.x, letterPos.y, 0)
+            * DirectX::XMMatrixOrthographicOffCenterLH(0, static_cast<float>(rect.right),
+                    static_cast<float>(rect.bottom), 0, 0.0f, 1.0f);
 
         DirectX::XMFLOAT4X4 mat = {};
         DirectX::XMStoreFloat4x4(&mat, transformMatrix);
