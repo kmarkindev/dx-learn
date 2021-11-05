@@ -1,26 +1,30 @@
 #include "ShaderLoader.h"
 
-std::pair<CComPtr<ID3D11VertexShader>, CComPtr<ID3DBlob>> ShaderLoader::LoadVertexShader(LPCWSTR filename, const char* entryPoint)
+std::pair<CComPtr<ID3D11VertexShader>, CComPtr<ID3DBlob>> ShaderLoader::LoadVertexShader(LPCWSTR filename,
+    const char* entryPoint)
 {
     ID3DBlob* bytecode = LoadShaderBytecode(filename, entryPoint, "vs_4_0");
     ID3D11VertexShader* vertexShader = nullptr;
 
-    HRESULT result = _d3dDevice->CreateVertexShader(bytecode->GetBufferPointer(), bytecode->GetBufferSize(), nullptr, &vertexShader);
+    HRESULT result =
+        _d3dDevice->CreateVertexShader(bytecode->GetBufferPointer(), bytecode->GetBufferSize(), nullptr, &vertexShader);
 
-    if(FAILED(result))
+    if (FAILED(result))
         throw std::runtime_error("Cannot create vertex shader");
 
     return std::make_pair(CComPtr(vertexShader), CComPtr(bytecode));
 }
 
-std::pair<CComPtr<ID3D11PixelShader>, CComPtr<ID3DBlob>> ShaderLoader::LoadPixelShader(LPCWSTR filename, const char* entryPoint)
+std::pair<CComPtr<ID3D11PixelShader>, CComPtr<ID3DBlob>> ShaderLoader::LoadPixelShader(LPCWSTR filename,
+    const char* entryPoint)
 {
     ID3DBlob* bytecode = LoadShaderBytecode(filename, entryPoint, "ps_4_0");
     ID3D11PixelShader* pixelShader = nullptr;
 
-    HRESULT result = _d3dDevice->CreatePixelShader(bytecode->GetBufferPointer(), bytecode->GetBufferSize(), nullptr, &pixelShader);
+    HRESULT result =
+        _d3dDevice->CreatePixelShader(bytecode->GetBufferPointer(), bytecode->GetBufferSize(), nullptr, &pixelShader);
 
-    if(FAILED(result))
+    if (FAILED(result))
         throw std::runtime_error("Cannot create pixel shader");
 
     return std::make_pair(CComPtr(pixelShader), CComPtr(bytecode));
@@ -34,13 +38,13 @@ CComPtr<ID3DBlob> ShaderLoader::LoadShaderBytecode(LPCWSTR filename, const char*
     DWORD shaderFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
 
     HRESULT result = D3DCompileFromFile(filename, nullptr, nullptr,
-            entryPoint, version, shaderFlags, 0, &bytecode, &errorBuffer.p);
+        entryPoint, version, shaderFlags, 0, &bytecode, &errorBuffer.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
     {
-        if(errorBuffer != nullptr)
+        if (errorBuffer != nullptr)
             throw std::runtime_error("Cannot load and compile shader "
-                                     + std::string((char*)errorBuffer->GetBufferPointer()));
+                + std::string((char*)errorBuffer->GetBufferPointer()));
         else
             throw std::runtime_error("Cannot load and compile shader");
     }

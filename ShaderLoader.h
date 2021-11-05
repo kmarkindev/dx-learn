@@ -15,9 +15,9 @@ public:
     explicit ShaderLoader(ID3D11Device* device);
 
     CComPtr<ID3DBlob> LoadShaderBytecode(LPCWSTR filename, const char* entryPoint, const char* version);
-    std::pair<CComPtr<ID3D11VertexShader>, CComPtr<ID3DBlob>> LoadVertexShader(LPCWSTR filename, const char* entryPoint);
+    std::pair<CComPtr<ID3D11VertexShader>, CComPtr<ID3DBlob>> LoadVertexShader(LPCWSTR filename,
+        const char* entryPoint);
     std::pair<CComPtr<ID3D11PixelShader>, CComPtr<ID3DBlob>> LoadPixelShader(LPCWSTR filename, const char* entryPoint);
-
 
 private:
 

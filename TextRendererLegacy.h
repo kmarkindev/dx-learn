@@ -11,11 +11,14 @@
 #include <memory>
 #include <map>
 
-class TextRenderer
+class TextRendererLegacy
 {
 public:
 
-    explicit TextRenderer(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* context, std::weak_ptr<ShaderLoader> shaderLoader);
+    explicit TextRendererLegacy(HWND hwnd,
+        ID3D11Device* device,
+        ID3D11DeviceContext* context,
+        std::weak_ptr<ShaderLoader> shaderLoader);
 
     void RenderString(std::string_view text, DirectX::XMFLOAT2 position, float scale = 1.0f);
 

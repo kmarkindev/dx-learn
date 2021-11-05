@@ -9,24 +9,25 @@ std::unique_ptr<BaseApp> GetApp(const HINSTANCE& hInst, const HWND& hwnd);
 
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    switch(uMsg) {
-        case WM_PAINT:
-        {
-            PAINTSTRUCT ps = {};
-            BeginPaint(hwnd, &ps);
-            EndPaint(hwnd, &ps);
+    switch (uMsg)
+    {
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps = {};
+        BeginPaint(hwnd, &ps);
+        EndPaint(hwnd, &ps);
 
-            break;
-        }
-        case WM_DESTROY:
-        {
-            PostQuitMessage(0);
-            break;
-        }
-        default:
-        {
-            return DefWindowProc(hwnd, uMsg, wParam, lParam);
-        }
+        break;
+    }
+    case WM_DESTROY:
+    {
+        PostQuitMessage(0);
+        break;
+    }
+    default:
+    {
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
     }
 
     return 0;
@@ -44,11 +45,11 @@ float GetTime()
     */
 
     static long long startMs = duration_cast<milliseconds>(
-            system_clock::now().time_since_epoch()
+        system_clock::now().time_since_epoch()
     ).count();
 
     long long msCurrent = duration_cast<milliseconds>(
-            system_clock::now().time_since_epoch()
+        system_clock::now().time_since_epoch()
     ).count();
 
     long long curMills = msCurrent - startMs;
@@ -103,9 +104,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow) try
     float lastTimePoint = GetTime();
     float deltaTime = 0.0;
 
-    while(!shouldExit)
+    while (!shouldExit)
     {
-        if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             shouldExit = msg.message == WM_QUIT;
 
@@ -126,12 +127,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow) try
 
     return 0;
 }
-catch(const std::exception& ex)
+catch (const std::exception& ex)
 {
     MessageBoxA(nullptr, ex.what(), "Exception", 0);
     return 1;
 }
-catch(...)
+catch (...)
 {
     MessageBoxA(nullptr, "Unhandled exception of non std::exception type", "Exception", 0);
     return 1;

@@ -8,7 +8,7 @@ BaseApp::BaseApp(const HINSTANCE& hInstance, const HWND& hwnd)
 
 bool BaseApp::Update(float deltaTime)
 {
-    if(Step(deltaTime))
+    if (Step(deltaTime))
         return true;
 
     Render();
@@ -32,7 +32,7 @@ void BaseApp::LoadD3d()
 {
     RECT rect;
     GetWindowRect(_hwnd, &rect);
-    const int windowSize[2] = {rect.right - rect.left, rect.bottom - rect.top};
+    const int windowSize[2] = { rect.right - rect.left, rect.bottom - rect.top };
 
     UINT createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
 
@@ -42,13 +42,22 @@ void BaseApp::LoadD3d()
     scDesc.OutputWindow = _hwnd;
     scDesc.Windowed = true;
     scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    scDesc.BufferDesc.Width = windowSize[0];
-    scDesc.BufferDesc.Height = windowSize[1];
-    scDesc.BufferDesc.RefreshRate.Numerator = 60;
-    scDesc.BufferDesc.RefreshRate.Numerator = 1;
-    scDesc.BufferDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-    scDesc.SampleDesc.Count = 1;
-    scDesc.SampleDesc.Quality = 0;
+    scDesc.BufferDesc
+        .Width = windowSize[0];
+    scDesc.BufferDesc
+        .Height = windowSize[1];
+    scDesc.BufferDesc
+        .RefreshRate
+        .Numerator = 60;
+    scDesc.BufferDesc
+        .RefreshRate
+        .Numerator = 1;
+    scDesc.BufferDesc
+        .Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    scDesc.SampleDesc
+        .Count = 1;
+    scDesc.SampleDesc
+        .Quality = 0;
     scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
     scDesc.Flags = 0;
 
@@ -97,5 +106,5 @@ void BaseApp::LoadD3d()
 void BaseApp::LoadDependencies()
 {
     _shaderLoader = std::make_shared<ShaderLoader>(_d3dDevice.p);
-    _textRenderer = std::make_shared<TextRenderer>(_hwnd, _d3dDevice.p, _d3dContext.p, _shaderLoader);
+    _textRenderer = std::make_shared<TextRendererLegacy>(_hwnd, _d3dDevice.p, _d3dContext.p, _shaderLoader);
 }

@@ -8,8 +8,8 @@ target_sources(Base INTERFACE
 	Main.cpp
 	BaseApp.cpp
 	BaseApp.h
-	TextRenderer.cpp
-	TextRenderer.h
+	TextRendererLegacy.cpp
+	TextRendererLegacy.h
 	ShaderLoader.cpp
 	ShaderLoader.h
 )

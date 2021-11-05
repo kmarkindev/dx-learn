@@ -17,7 +17,7 @@ void FirstRender::Render()
 
     _d3dContext->OMSetRenderTargets(1, &_backBufferRenderView.p, 0);
 
-    float clearColor[4] = {0.3f, 0.2f, 0.2f, 1.0f};
+    float clearColor[4] = { 0.3f, 0.2f, 0.2f, 1.0f };
     _d3dContext->ClearRenderTargetView(_backBufferRenderView.p, clearColor);
 
     UINT stride = sizeof(Vertex);
@@ -28,7 +28,7 @@ void FirstRender::Render()
     _d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     _d3dContext->VSSetShader(_vertShader.p, 0, 0);
-    _d3dContext->PSSetShader(_pixelShader.p, 0 ,0);
+    _d3dContext->PSSetShader(_pixelShader.p, 0, 0);
 
     _d3dContext->UpdateSubresource(_rotMatrixBuffer.p, 0, 0, &rotateMatrix, 0, 0);
     _d3dContext->VSSetConstantBuffers(0, 1, &_rotMatrixBuffer.p);
@@ -55,13 +55,13 @@ void FirstRender::CreateBuffer()
 
     Vertex verts[] = {
         //first triangle
-        { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) },
-        { XMFLOAT3(  0.5f, -0.5f, 1.0f ), XMFLOAT2( 1.0f, 0.0f ) },
-        { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
+        { XMFLOAT3(0.5f, 0.5f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+        { XMFLOAT3(0.5f, -0.5f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
+        { XMFLOAT3(-0.5f, -0.5f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
         //second triangle
-        { XMFLOAT3( -0.5f, -0.5f, 1.0f ), XMFLOAT2( 0.0f, 0.0f ) },
-        { XMFLOAT3( -0.5f,  0.5f, 1.0f ), XMFLOAT2( 0.0f, 1.0f ) },
-        { XMFLOAT3(  0.5f,  0.5f, 1.0f ), XMFLOAT2( 1.0f, 1.0f ) }
+        { XMFLOAT3(-0.5f, -0.5f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
+        { XMFLOAT3(-0.5f, 0.5f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+        { XMFLOAT3(0.5f, 0.5f, 1.0f), XMFLOAT2(1.0f, 1.0f) }
     };
 
     D3D11_BUFFER_DESC bufDesc = {};
@@ -74,7 +74,7 @@ void FirstRender::CreateBuffer()
 
     HRESULT result = _d3dDevice->CreateBuffer(&bufDesc, &subresData, &_triangleData.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
         throw std::runtime_error("Cannot load vertices into buffer");
 
     bufDesc = {};
@@ -84,7 +84,7 @@ void FirstRender::CreateBuffer()
 
     result = _d3dDevice->CreateBuffer(&bufDesc, nullptr, &_rotMatrixBuffer.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
         throw std::runtime_error("Cannot create buffer for rotation matrix");
 }
 
@@ -113,11 +113,11 @@ void FirstRender::LoadVertexShader()
     DWORD shaderFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
 
     HRESULT result = D3DCompileFromFile(L"Assets/sampleShader.fx", nullptr, nullptr,
-"VS_Main", "vs_4_0", shaderFlags, 0, &_vertShaderBytecode.p, &errorBuffer.p);
+        "VS_Main", "vs_4_0", shaderFlags, 0, &_vertShaderBytecode.p, &errorBuffer.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
     {
-        if(errorBuffer != nullptr)
+        if (errorBuffer != nullptr)
             throw std::runtime_error("Cannot load and compile vertex shader from 'sampleShader.fx': "
                 + std::string((char*)errorBuffer->GetBufferPointer()));
         else
@@ -125,27 +125,27 @@ void FirstRender::LoadVertexShader()
     }
 
     result = _d3dDevice->CreateVertexShader(_vertShaderBytecode->GetBufferPointer(),
-    _vertShaderBytecode->GetBufferSize(), 0, &_vertShader.p);
+        _vertShaderBytecode->GetBufferSize(), 0, &_vertShader.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
         throw std::runtime_error("Cannot create vertex shader from sampleShader.fx");
 }
 
 void FirstRender::CreateInputLayout()
 {
     D3D11_INPUT_ELEMENT_DESC vertexLayout[] =
-    {
-        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
-         0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"TEXCOORDS", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
-                sizeof(DirectX::XMFLOAT3), D3D11_INPUT_PER_VERTEX_DATA, 0}
-    };
+        {
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+              0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "TEXCOORDS", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+              sizeof(DirectX::XMFLOAT3), D3D11_INPUT_PER_VERTEX_DATA, 0 }
+        };
 
     HRESULT result = _d3dDevice->CreateInputLayout(vertexLayout, ARRAYSIZE(vertexLayout),
         _vertShaderBytecode->GetBufferPointer(), _vertShaderBytecode->GetBufferSize(),
         &_inputLayout.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
         throw std::runtime_error("Cannot create Input Layout");
 }
 
@@ -158,9 +158,9 @@ void FirstRender::LoadPixelShader()
     HRESULT result = D3DCompileFromFile(L"Assets/sampleShader.fx", nullptr, nullptr,
         "PS_Main", "ps_4_0", shaderFlags, 0, &_pixelShaderBytecode.p, &errorBuffer.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
     {
-        if(errorBuffer != nullptr)
+        if (errorBuffer != nullptr)
             throw std::runtime_error("Cannot load and compile pixel shader from 'sampleShader.fx': "
                 + std::string((char*)errorBuffer->GetBufferPointer()));
         else
@@ -170,7 +170,7 @@ void FirstRender::LoadPixelShader()
     result = _d3dDevice->CreatePixelShader(_pixelShaderBytecode->GetBufferPointer(),
         _pixelShaderBytecode->GetBufferSize(), 0, &_pixelShader.p);
 
-    if(FAILED(result))
+    if (FAILED(result))
         throw std::runtime_error("Cannot create pixel shader from sampleShader.fx");
 }
 
@@ -179,7 +179,7 @@ void FirstRender::LoadTexture()
     HRESULT res = DirectX::CreateWICTextureFromFile(_d3dDevice, _d3dContext,
         L"Assets/texture.jpg", reinterpret_cast<ID3D11Resource**>(&_texture.p), &_shaderResView.p);
 
-    if(FAILED(res))
+    if (FAILED(res))
         throw std::runtime_error("Cannot load texture");
 
     D3D11_SAMPLER_DESC samplerDesc = {};
@@ -192,7 +192,7 @@ void FirstRender::LoadTexture()
 
     res = _d3dDevice->CreateSamplerState(&samplerDesc, &_samplerState.p);
 
-    if(FAILED(res))
+    if (FAILED(res))
         throw std::runtime_error("Cannot create sampler state");
 }
 

@@ -7,7 +7,7 @@
 #include "atlbase.h"
 #include <DirectXMath.h>
 #include <WICTextureLoader.h>
-#include "TextRenderer.h"
+#include "TextRendererLegacy.h"
 #include "ShaderLoader.h"
 #include <memory>
 
@@ -19,8 +19,8 @@ public:
     virtual ~BaseApp() = default;
     BaseApp(const BaseApp&) = delete;
     BaseApp(BaseApp&&) = delete;
-    BaseApp& operator = (BaseApp) = delete;
-    BaseApp& operator = (BaseApp&) = delete;
+    BaseApp& operator=(BaseApp) = delete;
+    BaseApp& operator=(BaseApp&) = delete;
 
     void Init();
     void Shutdown();
@@ -33,7 +33,7 @@ protected:
     virtual bool Step(float deltaTime) = 0;
     virtual void Render() = 0;
 
-    std::shared_ptr<TextRenderer> _textRenderer;
+    std::shared_ptr<TextRendererLegacy> _textRenderer;
     std::shared_ptr<ShaderLoader> _shaderLoader;
 
     HINSTANCE _hInstance;
