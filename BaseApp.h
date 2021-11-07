@@ -7,9 +7,9 @@
 #include "atlbase.h"
 #include <DirectXMath.h>
 #include <WICTextureLoader.h>
-#include "TextRendererLegacy.h"
-#include "ImageRenderer.h"
-#include "ShaderLoader.h"
+#include "Utils/TextRendererLegacy.h"
+#include "Utils/ImageRenderer.h"
+#include "Utils/ShaderLoader.h"
 #include <memory>
 
 class BaseApp

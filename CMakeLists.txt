@@ -8,17 +8,12 @@ target_sources(Base INTERFACE
 	Main.cpp
 	BaseApp.cpp
 	BaseApp.h
-	TextRendererLegacy.cpp
-	TextRendererLegacy.h
-	ShaderLoader.cpp
-	ShaderLoader.h
-	ImageRenderer.cpp
-	ImageRenderer.h
 )
 
+add_subdirectory(utils)
 add_subdirectory(3rdParty)
 
-target_include_directories(Base INTERFACE / 3rdParty/FreeType/include)
+target_include_directories(Base INTERFACE / 3rdParty/FreeType/include utils)
 target_link_libraries(Base INTERFACE D3D11.lib D3DCompiler.lib DirectXTK freetype)
 target_compile_definitions(Base INTERFACE UNICODE)
 target_compile_options(Base INTERFACE /W4)
