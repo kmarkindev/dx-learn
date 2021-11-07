@@ -8,6 +8,7 @@
 #include <DirectXMath.h>
 #include <WICTextureLoader.h>
 #include "TextRendererLegacy.h"
+#include "ImageRenderer.h"
 #include "ShaderLoader.h"
 #include <memory>
 
@@ -35,6 +36,7 @@ protected:
 
     std::shared_ptr<TextRendererLegacy> _textRenderer;
     std::shared_ptr<ShaderLoader> _shaderLoader;
+    std::shared_ptr<ImageRenderer> _imageRenderer;
 
     HINSTANCE _hInstance;
     HWND _hwnd;

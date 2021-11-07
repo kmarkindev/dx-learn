@@ -12,6 +12,8 @@ target_sources(Base INTERFACE
 	TextRendererLegacy.h
 	ShaderLoader.cpp
 	ShaderLoader.h
+	ImageRenderer.cpp
+	ImageRenderer.h
 )
 
 add_subdirectory(3rdParty)
