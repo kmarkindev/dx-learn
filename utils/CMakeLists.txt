@@ -5,4 +5,6 @@ target_sources(Base INTERFACE
 	ShaderLoader.h
 	ImageRenderer.cpp
 	ImageRenderer.h
+	FontBitmapRenderer.cpp
+	FontBitmapRenderer.h
 )

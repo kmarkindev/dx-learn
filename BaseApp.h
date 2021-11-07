@@ -7,9 +7,10 @@
 #include "atlbase.h"
 #include <DirectXMath.h>
 #include <WICTextureLoader.h>
-#include "Utils/TextRendererLegacy.h"
-#include "Utils/ImageRenderer.h"
-#include "Utils/ShaderLoader.h"
+#include "TextRendererLegacy.h"
+#include "ImageRenderer.h"
+#include "ShaderLoader.h"
+#include "FontBitmapRenderer.h"
 #include <memory>
 
 class BaseApp
@@ -34,7 +35,8 @@ protected:
     virtual bool Step(float deltaTime) = 0;
     virtual void Render() = 0;
 
-    std::shared_ptr<TextRendererLegacy> _textRenderer;
+    std::shared_ptr<TextRendererLegacy> _textRendererLegacy;
+    std::shared_ptr<FontBitmapRenderer> _fontBitmapRenderer;
     std::shared_ptr<ShaderLoader> _shaderLoader;
     std::shared_ptr<ImageRenderer> _imageRenderer;
 

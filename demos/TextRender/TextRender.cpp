@@ -32,11 +32,11 @@ void TextRender::Render()
     float clearColor[4] = { 0.3f, 0.3f, 0.5f, 1.0f };
     _d3dContext->ClearRenderTargetView(_backBufferRenderView.p, clearColor);
 
-    _textRenderer->RenderString("Some sample text for testing.", { 20, 100 });
+    _textRendererLegacy->RenderString("Some sample text for testing.", { 20, 100 });
 
-    _textRenderer->RenderString("Hey, YOU!", { 50, 200 }, 0.5f);
+    _textRendererLegacy->RenderString("Hey, YOU!", { 50, 200 }, 0.5f);
 
-    _textRenderer->RenderString("Ya YA, TTTA", { 50, 350 }, 1.5f);
+    _textRendererLegacy->RenderString("Ya YA, TTTA", { 50, 350 }, 1.5f);
 
     _dxgiSwapChain->Present(0, 0);
 }

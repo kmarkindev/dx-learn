@@ -106,6 +106,7 @@ void BaseApp::LoadD3d()
 void BaseApp::LoadDependencies()
 {
     _shaderLoader = std::make_shared<ShaderLoader>(_d3dDevice.p);
-    _textRenderer = std::make_shared<TextRendererLegacy>(_hwnd, _d3dDevice.p, _d3dContext.p, _shaderLoader);
+    _textRendererLegacy = std::make_shared<TextRendererLegacy>(_hwnd, _d3dDevice.p, _d3dContext.p, _shaderLoader);
     _imageRenderer = std::make_shared<ImageRenderer>(_hwnd, _d3dDevice.p, _d3dContext.p, _shaderLoader);
+    _fontBitmapRenderer = std::make_shared<FontBitmapRenderer>();
 }
